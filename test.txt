@@ -1,0 +1,21 @@
+Ceci est un test
+ceci en est un autre
+
+ouloulou y'a un espace avant
+Mais la il n'y en a pas
+La on a une phrasemega longues avec pleins de mots de facon a bien etre sur que le buffer se rempli bien comme il faut sinon ca serait la catastropthe de pas bien lire avec une phrase bien longue
+Mais bon
+Les phrases courtes, c'est la vie
+
+
+
+
+Les espaces vides aussi
+
+
+je me demande ...
+66547416352141784152136
+Si les nombres sont bien lus.
+
+il parait que .....
+q			q			q y'a des tabulations, va savoir si tu les lis bien
