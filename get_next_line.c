@@ -6,7 +6,7 @@
 /*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 17:06:15 by ereali            #+#    #+#             */
-/*   Updated: 2019/11/12 17:49:22 by ereali           ###   ########.fr       */
+/*   Updated: 2019/11/29 16:03:34 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#define BUFFER_SIZE 32
 
-/*
-1) faire un get_next_line qui met simplement line a NULL
-2) faire la meme choses uniquement si le FD est bon sinon return -1
-3) Faire le return : Si le read a lu qqch, renvoyer 1, sinon 0
-4) Ajouter dans un buffer le contenu lu de read et print le buffer 
-5) repeter le 4 jusqu'a trouver un \n
-6) faire une fonction char *ft_strcut(char **src, char delim)
-7) faire un printf de la ligne decoupee et du buffer pour verifier
-8) mettre la ligne decoupee dans line
-9) Rajouter dans le return le test suivant : si buffer pas vide -> return 1
-*/
+int		ft_strlen(char *s1)
+{
+	int i;
+
+	i = 0;
+	if (!s1)
+		return (0);
+	while (s1[i])
+	{
+		i++;
+	}
+	return (i);
+}
 
 
-char    *ft_strchr(const char *s, int c)
+char	*ft_swap(int k, char *str)
+{
+	char	*tmp;
+	int		i;
+
+	tmp = str;
+	i = 0;
+	if (!(str = (char *)malloc(sizeof(char) * (ft_strlen(str) - k + 1))))
+		return (NULL);
+	while (tmp[k + i])
+	{
+		str[i] = tmp[k + i];
+		i++;
+	}
+	str[i] = '\0';
+	free(tmp);
+	return (str);
+}
+
+int		ft_strchr(const char *s, int c)
 {
 	size_t  i;
 
@@ -40,58 +60,176 @@ char    *ft_strchr(const char *s, int c)
 		i++;
 	if (s[i] == c)
 		return (i);
-	return (NULL);
+	return (-1);
 }
 
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*result;
+	int		i;
+
+	i = 0;
+	if ((!(s1)) && (!(s2)))
+		return (NULL);
+	if (!(result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return (NULL);
+	while (i < ft_strlen(s1) + ft_strlen(s2))
+	{
+		if (i >= ft_strlen(s1))
+			result[i] = s2[i - ft_strlen(s1)];
+		else
+			result[i] = s1[i];
+		i++;
+	}
+	result[i] = '\0';
+	free(s1);
+	return (result);
+}
+
+char	*ft_bzero(char *str, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
+	return (str);
+}
+
+/*	if (!str)
+	{
+		if (!(str = (char *)malloc((sizeof(char) * BUFFER_SIZE) + 1)))
+			return (-1);
+	}
+	else if ((k = ft_strchr(str, '\n')) >= 0)
+	{
+		if (!(*line = (char *)malloc((sizeof(char) * k) + 1)))
+			return (-1);
+		while (n < k)
+		{
+			(*line)[n] = str[n];
+			n++;
+		}
+		(*line)[n] = '\0';
+		n = 0;
+		str = ft_swap(k + 1, str);
+		return (1);
+	}
+	if (!(str1 = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+		return (-1);*/
+
+int	ft_check_str(char **str, char **line)
+{
+	int	n;
+	int	k;
+
+	n = 0;
+	k = 0;
+	if (!str)
+	{
+		if (!((*str) = (char *)malloc((sizeof(char) * BUFFER_SIZE) + 1)))
+			return (-1);
+	}
+	else if ((k = ft_strchr(*str, '\n')) >= 0)
+	{
+		if (!(*line = (char *)malloc((sizeof(char) * k) + 1)))
+			return (-1);
+		while (n < k)
+		{
+			(*line)[n] = (*str)[n];
+			n++;
+		}
+		(*line)[n] = '\0';
+		n = 0;
+		(*str) = ft_swap(k + 1, *str);
+		return (1);
+	}
+	return (0);
+}
+
+char *ft_use_read(char *str, char *str1, int fd,int *i)
+{
+	ft_bzero(str1, BUFFER_SIZE + 1);
+	while (((*i) = (int)(read(fd, str1, BUFFER_SIZE))) > 0) 
+	{
+		str = ft_strjoin(str , str1);
+		if (ft_strchr(str1, '\n') >= 0)
+			break;
+		ft_bzero(str1, BUFFER_SIZE + 1);
+	}
+	free(str1);
+	return (str);
+}
 
 int get_next_line(int fd, char **line)
 {
-	char *str;
+	static char *str;
+	char *str1;
 	int i;
-	int j;
 	int k;
 	int n;
 
-	n = 0;
 	i = 0;
-	j = 0;
-	if (!fd)
+	if ((n = ft_check_str(&str, line)) != 0)
+		return (n);
+	if (!(str1 = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (-1);
-	while ((i = read(fd, str, BUFFER_SIZE)) > 0 && ft_strchr((const char)str, '\n') == NULL)
-	{
-		j++;
-	}
-	if (j > 0 && (k = strchr(str , '\n')) >= 0)
-	{
-		if (!(line = (char *)malloc((sizeof(char) * k) + 1))
-			return (-1);
-		while (k > n)
-		{
-			line[n] = str[n];
-			n++;
-		}
-		line[k] = '\0';
-	}	
-	if (strchr(line, '\0') == -1)
-		return (-1)
+	n = 0;
+	str = ft_use_read(str, str1, fd, &i);
 	if (i == -1)
 		return (-1);
+	if ((k = ft_strchr(str, '\n')) >= 0)
+	{
+		if (!((*line) = (char *)malloc((sizeof(char) * k) + 1)))
+			return (-1);
+		while (n < k)
+		{
+			(*line)[n] = str[n];
+			n++;
+		}
+		(*line)[n] = '\0'; 
+		str = ft_swap(k + 1, str);
+	}
+	else if ((k = ft_strchr(str, '\0')) >= 0 && i == 0)
+	{
+		n = 0;
+		if (!(*line = (char *)malloc((sizeof(char) * k) + 1)))
+			return (-1);
+		while (n < k)
+		{
+			(*line)[n] = str[n];
+			n++;
+		}
+		(*line)[n] = '\0';
+		if (k == 0)
+			(*line) = NULL;
+		free(str);
+		str = NULL;
+		return (0);
+	}
 	return (1);
-	
 }
 
 int main()
 {
-	int fd = open ("test.txt", O_RDONLY);
+	int fd = open ("newfile", O_RDONLY);
 	char *line = NULL;
-
 	int i = 0;
+	int j = 0;
 
-	while (get_next_line(fd, &line) > 0)
+	while ((j = get_next_line(fd, &line)) > 0)
 	{
-		printf("Line [%d] = {%s}\n", i, line);	
+		printf("%d - Line [%d] = {%s}\n", j, i, line);
+		free(line);
 		i++;
 	}
-	
+	printf("%d - Line [%d] = {%s}\n",j , i, line);
+	free(line);
+	i = 0;
+	while (1)
+		i = 1;
 	return (0);
 }
