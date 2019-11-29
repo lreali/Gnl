@@ -6,56 +6,92 @@
 /*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:00:52 by ereali            #+#    #+#             */
-/*   Updated: 2019/10/27 19:35:29 by ereali           ###   ########.fr       */
+/*   Updated: 2019/11/29 17:41:54 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-static char	*ft_strchr(const char *s, int c)
+char	*ft_swap(int start, int end, char *str)
 {
-	size_t	i;
+	char	*tmp;
+	int		i;
 
 	i = 0;
+	if (end < 0 || end < start)
+		end = ft_strlen(str);
+	tmp = str;
+	if (!(str = (char *)malloc(sizeof(char) * (end - start + 1))))
+		return (NULL);
+	while ((start + i) < end)
+	{
+		str[i] = tmp[start + i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+int		ft_strlen(char *s1)
+{
+	int i;
+
+	i = 0;
+	if (!s1)
+		return (0);
+	while (s1[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_bzero(char *str, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
+	return (str);
+}
+
+int		ft_strchr(const char *s, int c)
+{
+	size_t  i;
+
 	if (!s)
 		return (-1);
+	i = 0;
 	while (s[i] != c && s[i])
 		i++;
 	if (s[i] == c)
-		return ((char *)s + i);
-	return (NULL);
+		return (i);
+	return (-1);
 }
 
-static char	*ft_cpy(char *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	i;
-	size_t	j;
+	char	*result;
+	int		i;
 
 	i = 0;
-	j = 0;
-	if (!(result = (char *)malloc(sizeof(char) *
-		(ft_strlen(s1) + ft_strlen(s2)) + 1)))
+	if ((!(s1)) && (!(s2)))
 		return (NULL);
-	while (s1[i])
-		i++;
-	while (s2[j])
+	if (!(result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return (NULL);
+	while (i < ft_strlen(s1) + ft_strlen(s2))
 	{
-		s1[i] = s2[j];
-		j++;
+		if (i >= ft_strlen(s1))
+			result[i] = s2[i - ft_strlen(s1)];
+		else
+			result[i] = s1[i];
 		i++;
 	}
 	result[i] = '\0';
-	return (s1);
-}
-
-static char		*ft_strjoin(char *s1, char const *s2)
-{
-	if ((!(s1)) && (!(s2)))
-		return (NULL);
-	if (!(s1))
-		return ((char *)s2);
-	if (!(s2))
-		return ((char *)s1);
-	s1 = ft_cpy(s1, s2);
-	return (s1);
+	free(s1);
+	return (result);
 }
