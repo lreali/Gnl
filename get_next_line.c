@@ -6,20 +6,17 @@
 /*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 17:06:15 by ereali            #+#    #+#             */
-/*   Updated: 2019/11/29 17:34:42 by ereali           ###   ########.fr       */
+/*   Updated: 2019/11/30 20:57:12 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "get_next_line.h"
 
-
-int	ft_check_str(char **str, char **line)
+int		ft_check_str(char **str, char **line)
 {
 	char	*tmp;
-	int	n;
-	int	k;
+	int		n;
+	int		k;
 
 	n = 0;
 	k = 0;
@@ -32,30 +29,30 @@ int	ft_check_str(char **str, char **line)
 	{
 		(*line) = ft_swap(0, k, *str);
 		tmp = (*str);
-		(*str) = ft_swap(k + 1, -1,*str);
+		(*str) = ft_swap(k + 1, -1, *str);
 		free(tmp);
 		return (1);
 	}
 	return (0);
 }
 
-char *ft_use_read(char *str, char *str1, int fd,int *i)
+char	*ft_use_read(char *str, char *str1, int fd, int *i)
 {
 	ft_bzero(str1, BUFFER_SIZE + 1);
-	while (((*i) = (int)(read(fd, str1, BUFFER_SIZE))) > 0) 
+	while (((*i) = (int)(read(fd, str1, BUFFER_SIZE))) > 0)
 	{
-		str = ft_strjoin(str , str1);
+		str = ft_strjoin(str, str1);
 		if (ft_strchr(str1, '\n') >= 0)
-			break;
+			break ;
 		ft_bzero(str1, BUFFER_SIZE + 1);
 	}
 	free(str1);
 	return (str);
 }
 
-int	ft_line(char **line, char **str, int i)
+int		ft_line(char **line, char **str, int i)
 {
-	int 	k;
+	int		k;
 	char	*str1;
 
 	if ((k = ft_strchr((*str), '\n')) >= 0)
@@ -67,7 +64,7 @@ int	ft_line(char **line, char **str, int i)
 	}
 	else if ((k = ft_strchr((*str), '\0')) >= 0 && i == 0)
 	{
-		(*line) = ft_swap(0 , k, (*str));
+		(*line) = ft_swap(0, k, (*str));
 		free(*str);
 		(*str) = NULL;
 		return (0);
@@ -75,12 +72,12 @@ int	ft_line(char **line, char **str, int i)
 	return (1);
 }
 
-int get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	static char *str;
-	char *str1;
-	int i;
-	int n;
+	static char	*str;
+	char		*str1;
+	int			i;
+	int			n;
 
 	i = 0;
 	if ((n = ft_check_str(&str, line)) != 0)

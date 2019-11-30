@@ -6,13 +6,17 @@
 /*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 17:23:20 by ereali            #+#    #+#             */
-/*   Updated: 2019/11/29 17:24:03 by ereali           ###   ########.fr       */
+/*   Updated: 2019/11/30 20:49:10 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
+#include <stdio.h>
+
+
 int main()
 {
-	int fd = open ("test.txt", O_RDONLY);
+	int fd = open ("newfile", O_RDONLY);
 	char *line = NULL;
 	int i = 0;
 	int j = 0;

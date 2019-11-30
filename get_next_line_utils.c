@@ -6,11 +6,11 @@
 /*   By: ereali <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:00:52 by ereali            #+#    #+#             */
-/*   Updated: 2019/11/29 17:41:54 by ereali           ###   ########.fr       */
+/*   Updated: 2019/11/30 21:00:53 by ereali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "get_next_line.h"
 
 char	*ft_swap(int start, int end, char *str)
 {
@@ -34,7 +34,7 @@ char	*ft_swap(int start, int end, char *str)
 
 int		ft_strlen(char *s1)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!s1)
@@ -61,7 +61,7 @@ char	*ft_bzero(char *str, int n)
 
 int		ft_strchr(const char *s, int c)
 {
-	size_t  i;
+	size_t	i;
 
 	if (!s)
 		return (-1);
@@ -81,7 +81,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	if ((!(s1)) && (!(s2)))
 		return (NULL);
-	if (!(result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1))))
+	if (!(result = (char *)malloc(sizeof(char) * (ft_strlen(s1) +
+			ft_strlen(s2) + 1))))
 		return (NULL);
 	while (i < ft_strlen(s1) + ft_strlen(s2))
 	{
